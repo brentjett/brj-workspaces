@@ -1,24 +1,43 @@
 <?php
-class BRJ_ThemeElementsAdmin {
+class BRJ_WorkspacesAdmin {
 
+    /**
+    * Sets up the admin menu page for code generation.
+    *
+    * @since 0.2
+    * @return void
+    */
     static function admin_menu() {
         $parent_slug = 'edit.php?post_type=brj-workspace';
-        $page_title = __('Export', 'bb-theme-elements');
-        $menu_title = __('Export', 'bb-theme-elements');
+        $page_title = __('Export', 'brj-workspaces');
+        $menu_title = __('Export', 'brj-workspaces');
         $capability = 'manage_options';
-        $menu_slug = 'brj-theme-elements-admin';
-        $callback = 'BRJ_ThemeElementsAdmin::render';
+        $menu_slug = 'brj-workspaces-admin-export';
+        $callback = 'BRJ_WorkspacesAdmin::render';
         add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $menu_slug, $callback );
     }
 
+    /**
+    * Setup scripts and stylesheets for admin pages
+    *
+    * @since 0.2
+    * @param string $hook The handle for the current admin screen.
+    * @return void
+    */
     static function admin_enqueue($hook) {
-        if ($hook == 'brj-workspace_page_brj-theme-elements-admin') {
-            wp_enqueue_style('theme-elements-admin', BB_THEME_ELEMENTS_URL . 'css/admin.css');
+        if ($hook == 'brj-workspace_page_brj-workspaces-admin-export') {
+            wp_enqueue_style('brj-workspaces-admin', BB_THEME_ELEMENTS_URL . 'css/admin.css');
             wp_enqueue_script('ace', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js');
-            wp_enqueue_script('theme-elements-admin', BB_THEME_ELEMENTS_URL . 'js/admin.js', array('jquery', 'ace'));
+            wp_enqueue_script('brj-workspaces-admin', BB_THEME_ELEMENTS_URL . 'js/admin.js', array('jquery', 'ace'));
         }
     }
 
+    /**
+    * Render the main admin page 'Export'
+    *
+    * @since 0.1
+    * @return void
+    */
     static function render() {
         $module_types = BRJ_ThemeElements::$worker_module_types;
 
@@ -70,14 +89,21 @@ class BRJ_ThemeElementsAdmin {
         <?php
     }
 
+    /**
+    * Register the Workspaces Post Type
+    *
+    * @since 0.2
+    * @return void
+    */
     static function register_post_types() {
+        $handle = 'brj-workspace';
         $labels = array(
-    		'name' => 'Workspaces',
-    		'singular_name' => 'Workspace',
-            'add_new_item' => 'Add New Workspace'
+    		'name' => __('Workspaces', 'brj-workspaces'),
+    		'singular_name' => __('Workspace', 'brj-workspaces'),
+            'add_new_item' => __('Add New Workspace', 'brj-workspaces'),
     	);
         $args = array(
-    		'label' => 'Workspaces',
+    		'label' => __('Workspace', 'brj-workspaces'),
             'labels' => $labels,
     		'hierarchical' => false,
     		'public' => true,
@@ -96,20 +122,26 @@ class BRJ_ThemeElementsAdmin {
             ),
             'menu_position' => 100
     	);
-        register_post_type('brj-workspace', $args);
+        register_post_type($handle, $args);
 
         // Enable Beaver Builder for Workspace Post Type
         $types = get_option('_fl_builder_post_types');
-        if (!in_array('brj-workspace', $types)) {
-            $types[] = 'brj-workspace';
+        if (!in_array($handle, $types)) {
+            $types[] = $handle;
             update_option('_fl_builder_post_types', $types);
         }
     }
 
+    /**
+    * Add Workspace pages to admin bar menu.
+    *
+    * @since 0.2
+    * @return void
+    */
     static function admin_bar() {
         global $wp_admin_bar;
-        $posts = BRJ_ThemeElements::get_posts();
 
+        // Top Level "Workspace Pages" Menu
     	$args = array(
     		'id'     => 'brj-workspaces',
     		'title'  => __( 'Workspace Pages', 'fl-builder' ),
@@ -117,6 +149,8 @@ class BRJ_ThemeElementsAdmin {
     	);
     	$wp_admin_bar->add_menu( $args );
 
+        // Link to each published workspace
+        $posts = BRJ_ThemeElements::get_posts();
         if (!empty($posts)) {
             foreach($posts as $id) {
                 $args = array(
@@ -129,7 +163,7 @@ class BRJ_ThemeElementsAdmin {
             }
         }
 
-        // Add New
+        // "Add New" Item
         $args = array(
     		'id' => 'brj-create-workspace',
     		'parent' => 'brj-workspaces',
@@ -138,7 +172,7 @@ class BRJ_ThemeElementsAdmin {
     	);
     	$wp_admin_bar->add_menu( $args );
 
-        // Export
+        // "Export" Item
         $args = array(
     		'id' => 'brj-export-workspace',
     		'parent' => 'brj-workspaces',
@@ -148,6 +182,15 @@ class BRJ_ThemeElementsAdmin {
     	$wp_admin_bar->add_menu( $args );
     }
 
+    /**
+    * Filter the edit link
+    *
+    * @since 0.3
+    * @param string $url
+    * @param int $post_id
+    * @param string $context
+    * @return string $url The Url to an edit screen
+    */
     static function filter_edit_post_link($url, $post_id, $context) {
         if (get_post_type($post_id) == 'brj-workspace') {
             $url = FLBuilderModel::get_edit_url($post_id);
@@ -155,6 +198,12 @@ class BRJ_ThemeElementsAdmin {
         return $url;
     }
 
+    /**
+    * Plugin activation setup
+    *
+    * @since 0.3
+    * @return void
+    */
     static function activate() {
         self::register_post_types();
         flush_rewrite_rules();
