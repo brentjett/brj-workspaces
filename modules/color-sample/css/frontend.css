@@ -1,0 +1,20 @@
+.color-sample-module {
+    position: relative;
+    background:#eee;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: 100;
+}
+.color-sample-module:before {
+    display: table;
+    content:"";
+    padding-top:100%;
+}
+.color-sample-module .color-sample-inner {
+    position: absolute;
+    padding:8%;
+    color:white;
+    font-size:1.4em;
+    bottom:0px;
+    left:0px;
+    right:0px;
+}

@@ -1,0 +1,12 @@
+.theme-element-module {
+    background:white;
+    border: 3px solid #E7E7E7;
+    padding:24px;
+    font-size: 20px;
+    font-weight: 200;
+    color:#aaa;
+    box-sizing: border-box;
+}
+.theme-element-module:hover {
+    background:#FBFBFB;
+}
