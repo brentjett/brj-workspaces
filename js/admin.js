@@ -1,8 +1,10 @@
 $ = jQuery.noConflict();
 $(document).ready(function() {
 
+    var theme = "ace/theme/clouds";
+
     var php_editor = ace.edit("php-editor");
-    php_editor.setTheme("ace/theme/clouds");
+    php_editor.setTheme(theme);
     php_editor.getSession().setMode({path:"ace/mode/php", inline:true});
     php_editor.getSession().setUseWrapMode(true);
     php_editor.setOption('displayIndentGuides', true);
@@ -10,7 +12,7 @@ $(document).ready(function() {
     php_editor.setReadOnly(true);
 
     var css_editor = ace.edit("css-editor");
-    css_editor.setTheme("ace/theme/clouds");
+    css_editor.setTheme(theme);
     css_editor.getSession().setMode({path:"ace/mode/css", inline:true});
     css_editor.getSession().setUseWrapMode(true);
     css_editor.setOption('displayIndentGuides', true);

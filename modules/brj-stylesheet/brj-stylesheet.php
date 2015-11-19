@@ -14,10 +14,14 @@ class BRJ_Stylesheet extends BRJ_WorkspaceModule {
 			'label_field' => 'label',
 			'accent_color' => 'FF7878'
 		));
-        
+
+        $this->add_js('ace', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js');
+
 		add_action('wp_head', 'BRJ_Stylesheet::print_head');
         add_action('brj_theme_elements/generate_css', 'BRJ_Stylesheet::render_css');
 	}
+
+
 
     static function print_head() {
         $modules = BRJ_ThemeElements::get_modules();

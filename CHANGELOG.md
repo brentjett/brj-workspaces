@@ -4,6 +4,7 @@
 * Added demo workspace
 * Auto flush permalink structure
 * Refactored Admin Class and added docs
+* Add stylesheet preview to stylesheet module frontend.
 
 ## v0.2-Alpha - 2015-11-17
 * Begun renaming around "Workspaces" concept.
