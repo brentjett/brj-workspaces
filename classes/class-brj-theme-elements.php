@@ -1,9 +1,28 @@
 <?php
 class BRJ_ThemeElements {
 
+    /**
+    * Array of all registered workspace modules
+    *
+    * @since 0.1
+    * @var array $worker_module_types
+    */
     static public $worker_module_types = array();
+
+    /**
+    * Array of all workspace module instances inside workspace layouts.
+    *
+    * @since 0.2
+    * @var array $modules
+    */
     static $modules = array();
 
+    /**
+    * Initialize modules
+    *
+    * @since 0.1
+    * @return void
+    */
     static function init() {
         if ( class_exists('FLBuilderModule') ) {
 
@@ -20,12 +39,21 @@ class BRJ_ThemeElements {
         }
     }
 
+    /**
+    * Enqueue Stylesheets and Scripts
+    *
+    * @since 0.1
+    * @return void
+    */
     static function enqueue() {
         wp_enqueue_style('brj-theme-elements-shared', BB_THEME_ELEMENTS_URL . '/css/module.css');
     }
 
     /**
-    * Gather all posts to be read for configuration.
+    * Collect posts to be used for configuration.
+    *
+    * @since 0.1
+    * @return array of post ids
     */
     static function get_posts() {
 
@@ -42,26 +70,29 @@ class BRJ_ThemeElements {
     }
 
     /**
-    *  Gather the layout data from each post.
+    * Collect layouts from posts to be used for configuration.
+    *
+    * @since 0.1
+    * @return array
     */
     static function get_layouts() {
-        /**
-        * filter: brj_get_component_posts
-        * This filter gets all posts to be used as component layouts.
-        */
-        $component_posts = self::get_posts();
+        $posts = self::get_posts();
         $layouts = array();
-        if (!empty($component_posts)) {
-            foreach($component_posts as $post_id) {
+        if (!empty($posts)) {
+            foreach($posts as $post_id) {
 
                 // get post meta
                 $draft_layout = get_post_meta($post_id, '_fl_builder_draft', true);
                 $layout = get_post_meta($post_id, '_fl_builder_data', true);
+
+                /**
+                * @todo add conditions around using draft or published.
+                */
                 if ($draft_layout != $layout) {
                     $layout = $draft_layout;
                 }
                 if (!empty($layout)) {
-                    // read layout and collect known modules
+
                     $layouts[$post_id] = $layout;
                 }
             }
@@ -69,6 +100,12 @@ class BRJ_ThemeElements {
         return $layouts;
     }
 
+    /**
+    * Collect instances of workspace modules inside layouts.
+    *
+    * @since 0.1
+    * @return array
+    */
     static function get_modules() {
 
         $modules = array();
@@ -94,6 +131,14 @@ class BRJ_ThemeElements {
         return $modules;
     }
 
+    /**
+    * Filter the beaver builder global settings for and add workspace settings.
+    *
+    * @since 0.2
+    * @param array $form
+    * @param string $id
+    * @return array beaver builder form data
+    */
     static function add_global_settings($form, $id) {
 
         $module_types = self::$worker_module_types;
@@ -133,7 +178,12 @@ class BRJ_ThemeElements {
         return $form;
     }
 
-    // Get include base urls
+    /**
+    * NOT IN USE - Stub for method to get url base locations for settings fields.
+    *
+    * @since 0.2
+    * @return array
+    */
     static function get_base_paths() {
         $paths = array(
             'themes' => 'my theme',
@@ -142,6 +192,12 @@ class BRJ_ThemeElements {
         return $path;
     }
 
+    /**
+    * NOT IN USE - gets an array of all stylesheets that are registered.
+    *
+    * @since 0.2
+    * @return array
+    */
     static function get_registered_stylesheets() {
         global $wp_styles;
         $stylesheets = array_keys($wp_styles->registered);
