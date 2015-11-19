@@ -62,7 +62,7 @@ class BRJ_ThemeElements {
                 }
                 if (!empty($layout)) {
                     // read layout and collect known modules
-                    $layouts[] = $layout;
+                    $layouts[$post_id] = $layout;
                 }
             }
         }
@@ -79,11 +79,12 @@ class BRJ_ThemeElements {
             $layouts = self::get_layouts();
             $module_types = array_keys(self::$worker_module_types);
             if (!empty($layouts)) {
-                foreach($layouts as $data ) {
+                foreach($layouts as $post_id => $data ) {
                     foreach($data as $node_id => $node) {
 
                         // Is it a module? Is it a configurable module?
                         if ( $node->type == 'module' && in_array( $node->settings->type, $module_types ) ) {
+                            $node->origin_post = $post_id;
                             $modules[$node->settings->type][] = $node;
                         }
                     }
@@ -100,17 +101,12 @@ class BRJ_ThemeElements {
         if ($id == 'global') {
             if (!empty($module_types)) {
                 $theme_module_settings = array(
-                    'title' => 'Theme Elements',
+                    'title' => __('Workspaces', 'brj-workspaces'),
                     'sections' => array(
                         'general' => array(
                             'title' => '',
                             'fields' => array(
-                                'active_pages' => array(
-                                    'type' => 'link',
-                                    'label' => __('Active Pages', 'fl-builder'),
-                                    'description' => __('Choose which pages you want the theme elements plugin to use for configuration', 'fl-builder'),
-                                    'multiple' => true
-),
+
                             )
                         )
                     )

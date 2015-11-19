@@ -24,10 +24,22 @@ class BRJ_Stylesheet extends BRJ_WorkspaceModule {
 
 
     static function print_head() {
+        global $post;
         $modules = BRJ_ThemeElements::get_modules();
 		$modules = $modules['brj-stylesheet'];
         if (!empty($modules)) {
             foreach($modules as $module) {
+                //print_r($module);
+
+                // don't include
+                if ($module->settings->include_on == 'none') {
+                    continue;
+                } else if ($module->settings->include_on == 'workspaces' && (get_post_type($post->ID) != 'brj-workspace')) {
+                    continue;
+                } else if ($module->settings->include_on == 'this') {
+                    $origin = $module->origin_post;
+                    if ($origin != $post->ID) continue;
+                }
             ?>
             <style id="<?php echo $module->node ?>-stylesheet">
             <?php echo $module->settings->css ?>
@@ -63,37 +75,16 @@ FLBuilder::register_module('BRJ_Stylesheet', array(
                         'label' => 'Name',
                         'placeholder' => 'Main Stylesheet'
                     ),
-                    /*
-                    'kind' => array(
+                    'include_on' => array(
                         'type' => 'select',
-                        'label' => 'Type',
+                        'label' => 'Include Styles On',
                         'options' => array(
-                            'stylesheet_uri' => 'Main Stylesheet',
-                            'external' => 'External',
-                            'embed' => 'Embedded'
-                        ),
-                        'toggle'        => array(
-							'external'      => array(
-								'fields'      => array()
-							),
-							'embed'     => array(
-								'fields'      => array('css')
-							)
-						)
-                    ),
-                    'base_path' => array(
-                        'type' => 'select',
-                        'label' => 'Base Path',
-                        'options' => array(
-                            'active_theme' => 'Active Theme'
+                            'all' => 'Entire Site',
+                            'this' => 'Only This Page',
+                            'workspaces' => 'Only Workspace Pages',
+                            'none' => 'Do Not Include'
                         )
                     ),
-                    'path' => array(
-                        'type' => 'text',
-                        'label' => 'path',
-                        'placeholder' => '/path/to/style.css'
-                    ),
-                    */
                     'css' => array(
                         'type' => 'code',
                         'editor'        => 'css',
@@ -104,17 +95,16 @@ FLBuilder::register_module('BRJ_Stylesheet', array(
         )
     ),
     /*
-    'dependencies' => array(
-        'title' => __('Dependencies', 'fl-builder'),
+    'settings' => array(
+        'title' => __('Settings', 'fl-builder'),
         'sections' => array(
             'general' => array(
 				'title' => '',
 				'fields' => array(
-                    'stylesheets' => array(
-                        'type' => 'select',
-                        'label' => 'Registered Stylesheets',
-                        'options' => array(),
-                        'multi-select'  => true
+                    'version' => array(
+                        'type' => 'text',
+                        'label' => 'Version',
+                        'placeholder' => ''
                     )
                 )
             )
