@@ -244,9 +244,7 @@ class BRJ_WorkspacesAdmin {
                 'readme' => 'README.MD', // which file to use as the readme for the version number
                 'access_token' => '72c0d3c26cd49014a44e5b6cc618cc76bf1a79e2'
             );
-            print_r($config);
             $updater = new WPGitHubUpdater($config);
-            print_r($updater);
         }
     }
 }
