@@ -45,7 +45,7 @@ class BRJ_WorkspacesAdmin {
         ?>
         <div class="wrap brj-theme-elements-wrap">
 
-        	<h1><?php _e('Theme Elements', 'bb-theme-elements') ?></h1>
+        	<h1><?php _e('Workspaces', 'brj-workspaces') ?></h1>
 
             <div class="editor-tabs">
                 <div class="editor-tab php-tab active" data-trigger-tab="php">PHP</div>
@@ -226,6 +226,25 @@ class BRJ_WorkspacesAdmin {
                 update_post_meta($id, '_fl_builder_draft', $layout);
                 update_post_meta($id, '_fl_builder_data', $layout);
             }
+        }
+    }
+
+    static function setup_updater() {
+        if (is_admin() && class_exists('WPGitHubUpdater')) { // note the use of is_admin() to double check that this is happening in the admin
+            $config = array(
+                'slug' => plugin_basename(__FILE__), // this is the slug of your plugin
+                'proper_folder_name' => 'brj-workspaces', // this is the name of the folder your plugin lives in
+                'api_url' => 'https://api.github.com/repos/brentjett/brj-workspaces', // the github API url of your github repo
+                'raw_url' => 'https://raw.github.com/brentjett/brj-workspaces/master', // the github raw url of your github repo
+                'github_url' => 'https://github.com/brentjett/brj-workspaces', // the github url of your github repo
+                'zip_url' => 'https://github.com/brentjett/brj-workspaces/zipball/master', // the zip url of the github repo
+                'sslverify' => true, // wether WP should check the validity of the SSL cert when getting an update, see https://github.com/jkudish/WordPress-GitHub-Plugin-Updater/issues/2 and https://github.com/jkudish/WordPress-GitHub-Plugin-Updater/issues/4 for details
+                'requires' => '4.3.1', // which version of WordPress does your plugin require?
+                'tested' => '4.3.1', // which version of WordPress is your plugin tested up to?
+                'readme' => 'README.MD', // which file to use as the readme for the version number
+                'access_token' => '72c0d3c26cd49014a44e5b6cc618cc76bf1a79e2'
+            );
+            new WPGitHubUpdater($config);
         }
     }
 }

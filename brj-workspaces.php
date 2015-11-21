@@ -2,7 +2,7 @@
 /*
 Plugin Name: Workspace Pages for Beaver Builder
 Author: Brent Jett
-Version: 0.3-alpha
+Version: 0.3.2
 Description: This plugin offers a set of modules for Beaver Builder that allow you to simulate theme components while you construct your theme or plugin.
 */
 
@@ -17,6 +17,7 @@ if (class_exists('FLBuilder')) {
     require_once BB_THEME_ELEMENTS_DIR . '/classes/class-brj-workspaces-admin.php';
     require_once BB_THEME_ELEMENTS_DIR . '/classes/class-brj-theme-elements-generator.php';
     require_once BB_THEME_ELEMENTS_DIR . '/classes/class-brj-workspace-module.php';
+    require_once BB_THEME_ELEMENTS_DIR . '/classes/class-wp-github-updater.php';
 
     // Kickoff Everything
     add_action('plugins_loaded', 'BRJ_ThemeElements::init' );
@@ -27,8 +28,10 @@ if (class_exists('FLBuilder')) {
     add_action('admin_enqueue_scripts', 'BRJ_WorkspacesAdmin::admin_enqueue');
     add_action('wp_before_admin_bar_render', 'BRJ_WorkspacesAdmin::admin_bar');
     add_action('init', 'BRJ_WorkspacesAdmin::register_post_types');
+    add_action('init', 'BRJ_WorkspacesAdmin::setup_updater');
 
     add_filter('fl_builder_register_settings_form', 'BRJ_ThemeElements::add_global_settings', 10, 2);
+    add_filter('template_include', 'BRJ_ThemeElements::get_workspace_template');
     //add_filter('get_edit_post_link', 'BRJ_ThemeElementsAdmin::filter_edit_post_link', 10, 3);
 
     register_activation_hook( __FILE__, 'BRJ_WorkspacesAdmin::activate' );

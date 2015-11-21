@@ -204,5 +204,13 @@ class BRJ_ThemeElements {
         return $stylesheets;
     }
 
+    /**
+    * Select a template file to use for Workspace post types
+    * @return string Path to template
+    */
+    static function get_workspace_template($template) {
+        $template = BB_THEME_ELEMENTS_DIR . '/includes/workspace-template.php';
+        return $template;
+    }
 }
 ?>
