@@ -2,7 +2,7 @@
 /*
 Plugin Name: Workspace Pages for Beaver Builder
 Author: Brent Jett
-Version: 0.3.2
+Version: 0.3.3
 Description: This plugin offers a set of modules for Beaver Builder that allow you to simulate theme components while you construct your theme or plugin.
 */
 

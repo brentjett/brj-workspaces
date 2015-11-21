@@ -230,7 +230,7 @@ class BRJ_WorkspacesAdmin {
     }
 
     static function setup_updater() {
-        if (is_admin() && class_exists('WPGitHubUpdater')) { // note the use of is_admin() to double check that this is happening in the admin
+        if (is_admin() && class_exists('WP_GitHub_Updater')) { // note the use of is_admin() to double check that this is happening in the admin
             $config = array(
                 'slug' => plugin_basename(__FILE__), // this is the slug of your plugin
                 'proper_folder_name' => 'brj-workspaces', // this is the name of the folder your plugin lives in
@@ -244,7 +244,9 @@ class BRJ_WorkspacesAdmin {
                 'readme' => 'README.MD', // which file to use as the readme for the version number
                 'access_token' => '72c0d3c26cd49014a44e5b6cc618cc76bf1a79e2'
             );
-            new WPGitHubUpdater($config);
+            print_r($config);
+            $updater = new WPGitHubUpdater($config);
+            print_r($updater);
         }
     }
 }

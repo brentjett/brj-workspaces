@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.3.2
+## v0.3.2, v0.3.3
 * Updater Test
 
 ## v0.3.1 - 2015-11-19
