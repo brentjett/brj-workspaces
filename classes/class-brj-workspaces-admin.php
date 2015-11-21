@@ -232,7 +232,7 @@ class BRJ_WorkspacesAdmin {
     static function setup_updater() {
         if (is_admin() && class_exists('WP_GitHub_Updater')) { // note the use of is_admin() to double check that this is happening in the admin
             $config = array(
-                'slug' => plugin_basename(__FILE__), // this is the slug of your plugin
+                'slug' => BRJ_WORKSPACE_PLUGIN_SLUG, // this is the slug of your plugin
                 'proper_folder_name' => 'brj-workspaces', // this is the name of the folder your plugin lives in
                 'api_url' => 'https://api.github.com/repos/brentjett/brj-workspaces', // the github API url of your github repo
                 'raw_url' => 'https://raw.github.com/brentjett/brj-workspaces/master', // the github raw url of your github repo
@@ -245,6 +245,7 @@ class BRJ_WorkspacesAdmin {
                 'access_token' => '72c0d3c26cd49014a44e5b6cc618cc76bf1a79e2'
             );
             $updater = new WP_GitHub_Updater($config);
+            print_r($updater);
         }
     }
 }

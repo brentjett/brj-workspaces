@@ -2,7 +2,7 @@
 /*
 Plugin Name: Workspace Pages for Beaver Builder
 Author: Brent Jett
-Version: 0.3.4
+Version: 0.3.5
 Description: This plugin offers a set of modules for Beaver Builder that allow you to simulate theme components while you construct your theme or plugin.
 */
 
@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 define( 'BB_THEME_ELEMENTS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BB_THEME_ELEMENTS_URL', plugins_url( '/', __FILE__ ) );
 define( 'BB_THEME_ELEMENTS_MODULE_CATEGORY', 'Workspace Modules');
+define( 'BRJ_WORKSPACE_PLUGIN_SLUG', plugin_basename(__FILE__));
 
 if (class_exists('FLBuilder')) {
 
